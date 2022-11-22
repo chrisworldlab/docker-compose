@@ -34,10 +34,6 @@ services:
 
       dockerfile: Dockerfile.db
 
-    volumes:
-
-      - "/home/$USER/bgapp/backup:/root/backup"
-
     networks:
 
       - app-network
