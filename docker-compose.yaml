@@ -1,0 +1,75 @@
+
+services:
+
+  web:
+
+    build:
+
+      context: .
+
+      dockerfile: Dockerfile.web
+
+    ports:
+
+      - 80:80
+
+    volumes:
+
+      - "/home/$USER/bgapp/web:/var/www/html:ro"
+
+
+    networks:
+
+      - app-network
+
+    depends_on:
+
+      - db
+
+  db:
+
+    build:
+
+      context: .
+
+      dockerfile: Dockerfile.db
+
+    volumes:
+
+      - "/home/$USER/bgapp/backup:/root/backup"
+
+    networks:
+
+      - app-network
+
+    environment:
+
+      MYSQL_ROOT_PASSWORD: "12345"
+
+  backup:
+    image: databack/mysql-backup
+    restart: always
+    volumes:
+     - /home/$USER/bgapp/backup/db:/db
+     #- /home/vagrant/bgapp/backup/pre:/scripts.d/pre-backup
+     #- /home/vagrant/bgapp/backup/post:/scripts.d/post-backup
+    environment:
+     - DB_DUMP_TARGET=/db
+     - DB_USER=web_user
+     - DB_PASS=Password1
+     #- DB_DUMP_FREQ=1
+     - DB_DUMP_BEGIN=2330
+     - DB_SERVER=db
+     - DB_DUMP_CRON=* * * * *
+    networks:
+
+      - app-network
+  
+  mysql_db:
+    image: mysql
+
+
+
+networks:
+
+  app-network:
