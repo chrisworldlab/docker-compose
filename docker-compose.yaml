@@ -12,12 +12,11 @@ services:
     ports:
 
       - 80:80
-
+      - 443:443
     volumes:
 
       - "./web:/var/www/html:ro"
-
-
+      - "./dir_volume/cert:/cert"
     networks:
 
       - app-network
@@ -46,7 +45,7 @@ services:
     image: databack/mysql-backup
     restart: always
     volumes:
-     - ./backup/db:/db
+     - ./dir_volume/db_backup:/db
      #- /home/vagrant/bgapp/backup/pre:/scripts.d/pre-backup
      #- /home/vagrant/bgapp/backup/post:/scripts.d/post-backup
     environment:
@@ -56,7 +55,7 @@ services:
      #- DB_DUMP_FREQ=1
      - DB_DUMP_BEGIN=2330
      - DB_SERVER=db
-     - DB_DUMP_CRON=* * * * *
+     - DB_DUMP_CRON=0 6 * * *
     networks:
 
       - app-network
