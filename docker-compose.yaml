@@ -15,7 +15,7 @@ services:
 
     volumes:
 
-      - "/home/$USER/bgapp/web:/var/www/html:ro"
+      - "./web:/var/www/html:ro"
 
 
     networks:
@@ -46,7 +46,7 @@ services:
     image: databack/mysql-backup
     restart: always
     volumes:
-     - /home/$USER/bgapp/backup/db:/db
+     - ./backup/db:/db
      #- /home/vagrant/bgapp/backup/pre:/scripts.d/pre-backup
      #- /home/vagrant/bgapp/backup/post:/scripts.d/post-backup
     environment:
